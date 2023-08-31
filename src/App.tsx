@@ -1,6 +1,5 @@
 import React from 'react';
-import { CalendarComponent } from './components';
-
+import { CalendarComponent } from './components/';
 function App() {
   return (
     <div>

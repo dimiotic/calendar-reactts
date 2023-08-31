@@ -1,6 +1,7 @@
-import moment from 'moment';
 import React from 'react';
-import { styled } from 'styled-components';
+import CalendarDates from './CalendarDates';
+import moment from 'moment';
+import CalendarHeader from './CalendarHeader';
 
 const CalendarComponent = () => {
   moment.updateLocale('en', {
@@ -17,28 +18,13 @@ const CalendarComponent = () => {
   //   daysOfMonth.push(day.clone());
   //   day.add(1, 'day');
   // }
-  const day = startDate.clone().subtract(1, 'day');
-  const daysOfMonth = [...Array(42)].map(() => day.add(1, 'day').clone());
+  console.log(typeof startDate);
   return (
-    <Wrapper>
-      {daysOfMonth.map((dayItem, index) => {
-        console.log(day);
-
-        return (
-          <div key={dayItem.format('D M Y')}>
-            {dayItem.format('D') === '1'
-              ? dayItem.format('D MMM').split(' ').join('. ')
-              : dayItem.format('D')}
-          </div>
-        );
-      })}
-    </Wrapper>
+    <main>
+      <CalendarHeader />
+      <CalendarDates startDate={startDate} />
+    </main>
   );
 };
 
-const Wrapper = styled.section`
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  grid-template-rows: repeat(6, 1fr);
-`;
 export default CalendarComponent;
