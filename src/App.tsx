@@ -2,7 +2,7 @@ import React from 'react';
 import { CalendarComponent } from './components/';
 function App() {
   return (
-    <div>
+    <div style={{}}>
       <CalendarComponent />
     </div>
   );

@@ -66,6 +66,7 @@ const CalendarComponent = () => {
     </main>
   );
 };
+
 const HeaderWrapper = styled.section`
   background-color: #1f1e1e;
   section {

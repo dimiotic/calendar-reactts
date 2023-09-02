@@ -54,7 +54,7 @@ const Wrapper = styled.div<{
     margin-right: 10px;
   }
   justify-content: flex-end;
-  min-height: 100px;
+  min-height: 120px;
   min-width: 140px;
 `;
 export default DateItem;
