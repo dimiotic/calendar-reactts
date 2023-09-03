@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 import { styled } from 'styled-components';
 import DateItem from './DateItem';
-
+const url = 'http://localhost:5000';
+const totalDays = 42;
 const CalendarComponent = () => {
   const daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   const [today, setToday] = useState(moment());
@@ -13,8 +14,10 @@ const CalendarComponent = () => {
   });
   const startDate = today.clone().startOf('month').startOf('week');
   const day = startDate.clone().subtract(1, 'day');
-  const daysOfMonth = [...Array(42)].map(() => day.add(1, 'day').clone());
-  const thisMonth = today.clone().add(1, 'week').format('MMMM ');
+  const daysOfMonth = [...Array(totalDays)].map(() =>
+    day.add(1, 'day').clone()
+  );
+  const thisMonth = today.clone().add(1, 'week').format('MMMM');
   const setPrevMonth = () => {
     setToday((prev) => prev.clone().subtract(1, 'month'));
   };
@@ -24,7 +27,18 @@ const CalendarComponent = () => {
   const setNextMonth = () => {
     setToday((prev) => prev.clone().add(1, 'month'));
   };
-
+  const [events, setEvents] = useState([]);
+  const startDateQuery = startDate.clone().format('X');
+  const endDateQuery = startDate.clone().add(totalDays, 'days').format('X');
+  useEffect(() => {
+    fetch(
+      `${url}/events?timestamp_gte=${startDateQuery}&timestamp_lte=${endDateQuery}`
+    )
+      .then((res) => res.json())
+      .then((res) => {
+        setEvents(res);
+      });
+  }, [today]);
   return (
     <main>
       <HeaderWrapper>
@@ -57,7 +71,8 @@ const CalendarComponent = () => {
           return (
             <DateItem
               thisMonth={thisMonth}
-              date={dayItem.format('D MMM Y ddd')}
+              events={events}
+              date={dayItem}
               key={dayItem.format('D M Y')}
             />
           );

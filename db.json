@@ -1,19 +1,34 @@
 {
-  "posts": [
+  "events": [
     {
       "id": 1,
-      "title": "json-server",
-      "author": "typicode"
-    }
-  ],
-  "comments": [
+      "title": "finish react-calendar",
+      "timestamp": 1693744502
+    },
     {
-      "id": 1,
-      "body": "some comment",
-      "postId": 1
+      "id": 2,
+      "title": "Test Math",
+      "timestamp": 1693899302
+    },
+    {
+      "id": 3,
+      "title": "date",
+      "timestamp": 1693391702
+    },
+    {
+      "id": 4,
+      "title": "cyberpunk",
+      "timestamp": 1695724502
+    },
+    {
+      "id": 5,
+      "title": "shopping",
+      "timestamp": 1695292502
+    },
+    {
+      "id": 6,
+      "title": "День народження Марійка",
+      "timestamp": 1702208102
     }
-  ],
-  "profile": {
-    "name": "typicode"
-  }
+  ]
 }
