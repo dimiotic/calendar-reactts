@@ -1,22 +1,23 @@
 import moment, { Moment } from 'moment';
-import React, { FC } from 'react';
+import React, { FC, useRef } from 'react';
 import { styled } from 'styled-components';
 import { IEvent } from '../../types/IEvent';
+import { useScrollbar } from '../../hooks/useScrollbar';
 interface DateObj {
   date: Moment;
   thisMonth: string;
   events: IEvent[];
 }
 const DateItem: FC<DateObj> = ({ date, thisMonth, events }) => {
+  const scrollableWrapper = useRef(null);
+  useScrollbar(scrollableWrapper);
   return (
-    <div>
-      <Wrapper
-        $isThisMonth={date.format('MMM') === thisMonth.substring(0, 3)}
-        $isToday={moment().format('D M y') === date.format('D M y')}
-        $isWeekend={
-          date.format('ddd') === 'Sun' || date.format('ddd') === 'Sat'
-        }
-      >
+    <Wrapper
+      $isThisMonth={date.format('MMM') === thisMonth.substring(0, 3)}
+      $isToday={moment().format('D M y') === date.format('D M y')}
+      $isWeekend={date.format('ddd') === 'Sun' || date.format('ddd') === 'Sat'}
+    >
+      <DateRow>
         {date.format('D') === '1' ? (
           <>
             <p>{date.format('D')}</p> <h3>{date.format('MMM')}</h3>
@@ -24,25 +25,46 @@ const DateItem: FC<DateObj> = ({ date, thisMonth, events }) => {
         ) : (
           <p>{date.format('D')}</p>
         )}
-      </Wrapper>
-      <EventListWrapper>
-        {events
-          .filter(
-            (event) =>
-              event.timestamp >= Number(date.format('X')) &&
-              event.timestamp <= Number(date.clone().endOf('day').format('X'))
-          )
-          .map((event) => (
-            <li key={event.id}>{event.title}</li>
-          ))}
-      </EventListWrapper>
-    </div>
+      </DateRow>
+
+      <div ref={scrollableWrapper}>
+        <EventListWrapper>
+          {events
+            .filter(
+              (event) =>
+                event.timestamp >= Number(date.format('X')) &&
+                event.timestamp <= Number(date.clone().endOf('day').format('X'))
+            )
+            .map((event) => (
+              <button key={event.id}>
+                {event.title.length > 24
+                  ? event.title.substring(0, 24) + '...'
+                  : event.title}
+              </button>
+            ))}
+        </EventListWrapper>
+      </div>
+    </Wrapper>
   );
 };
-const EventListWrapper = styled.ul`
-  margin: unset;
-  list-style-position: inside;
-  padding-left: 4px;
+const EventListWrapper = styled.div`
+  padding: 0 7px 0 3px;
+  button {
+    display: block;
+    background-color: #e683e679;
+    width: 100%;
+    color: white;
+    min-height: 30px;
+    border: none;
+    margin: 2px;
+    text-align: left;
+    padding: 0 7px;
+    font-size: 18px;
+  }
+`;
+const DateRow = styled.div`
+  display: flex;
+  justify-content: flex-end;
 `;
 const Wrapper = styled.div<{
   $isToday?: boolean;
@@ -50,6 +72,7 @@ const Wrapper = styled.div<{
   $isWeekend?: boolean;
 }>`
   display: flex;
+  flex-direction: column;
   background-color: ${(props) => (props.$isWeekend ? '#2b2b2b' : '#1f1e1e')};
 
   P {
@@ -76,8 +99,7 @@ const Wrapper = styled.div<{
     color: ${(props) => (props.$isThisMonth ? '' : '#505050')};
     margin-right: 10px;
   }
-  justify-content: flex-end;
-  min-height: 120px;
+  height: 143px;
   min-width: 140px;
 `;
 

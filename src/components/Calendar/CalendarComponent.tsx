@@ -12,6 +12,7 @@ const CalendarComponent = () => {
       dow: 1,
     },
   });
+
   const startDate = today.clone().startOf('month').startOf('week');
   const day = startDate.clone().subtract(1, 'day');
   const daysOfMonth = [...Array(totalDays)].map(() =>
