@@ -1,18 +1,22 @@
 import moment, { Moment } from 'moment';
-import React, { FC, useRef } from 'react';
+import React, { Dispatch, FC, SetStateAction, useRef, useState } from 'react';
 import { styled } from 'styled-components';
 import { IEvent } from '../../types/IEvent';
 import { useScrollbar } from '../../hooks/useScrollbar';
+
 interface DateObj {
   date: Moment;
   thisMonth: string;
   events: IEvent[];
+  setModal: Dispatch<SetStateAction<boolean>>;
 }
-const DateItem: FC<DateObj> = ({ date, thisMonth, events }) => {
+const DateItem: FC<DateObj> = ({ date, thisMonth, events, setModal }) => {
   const scrollableWrapper = useRef(null);
   useScrollbar(scrollableWrapper);
+
   return (
     <Wrapper
+      onDoubleClick={() => setModal(true)}
       $isThisMonth={date.format('MMM') === thisMonth.substring(0, 3)}
       $isToday={moment().format('D M y') === date.format('D M y')}
       $isWeekend={date.format('ddd') === 'Sun' || date.format('ddd') === 'Sat'}
@@ -50,6 +54,7 @@ const DateItem: FC<DateObj> = ({ date, thisMonth, events }) => {
 const EventListWrapper = styled.div`
   padding: 0 7px 0 3px;
   button {
+    z-index: 1;
     display: block;
     background-color: #e683e679;
     width: 100%;

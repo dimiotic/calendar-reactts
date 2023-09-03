@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import moment from 'moment';
 import { styled } from 'styled-components';
 import DateItem from './DateItem';
+import EditModal from './EditModal';
 const url = 'http://localhost:5000';
 const totalDays = 42;
 const CalendarComponent = () => {
@@ -40,8 +41,10 @@ const CalendarComponent = () => {
         setEvents(res);
       });
   }, [today]);
+  const [modal, setModal] = useState(false);
   return (
     <main>
+      {modal && <EditModal modal={modal} setModal={setModal} />}
       <HeaderWrapper>
         <HeaderTopRow>
           <section>
@@ -71,6 +74,7 @@ const CalendarComponent = () => {
         {daysOfMonth.map((dayItem) => {
           return (
             <DateItem
+              setModal={setModal}
               thisMonth={thisMonth}
               events={events}
               date={dayItem}
