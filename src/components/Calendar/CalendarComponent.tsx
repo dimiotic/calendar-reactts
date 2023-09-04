@@ -3,9 +3,12 @@ import moment from 'moment';
 import { styled } from 'styled-components';
 import DateItem from './DateItem';
 import EditModal from './EditModal';
-const url = 'http://localhost:5000';
+import { useModalContext } from '../../context/ModalContext';
+export const url = 'http://localhost:5000';
 const totalDays = 42;
 const CalendarComponent = () => {
+  const { modal, setModal, eventCreated } = useModalContext();
+
   const daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   const [today, setToday] = useState(moment());
   moment.updateLocale('eu', {
@@ -40,11 +43,12 @@ const CalendarComponent = () => {
       .then((res) => {
         setEvents(res);
       });
-  }, [today]);
-  const [modal, setModal] = useState(false);
+  }, [today, eventCreated]);
   return (
-    <main>
-      {modal && <EditModal modal={modal} setModal={setModal} />}
+    //@ts-ignore
+    <main onClick={(e) => setModal(e.target?.id === 'modal')}>
+      {modal && <EditModal />}
+
       <HeaderWrapper>
         <HeaderTopRow>
           <section>
@@ -74,7 +78,6 @@ const CalendarComponent = () => {
         {daysOfMonth.map((dayItem) => {
           return (
             <DateItem
-              setModal={setModal}
               thisMonth={thisMonth}
               events={events}
               date={dayItem}

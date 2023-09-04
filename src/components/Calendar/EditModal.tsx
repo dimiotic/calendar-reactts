@@ -1,51 +1,90 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import moment, { Moment } from 'moment';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import { styled } from 'styled-components';
-
-interface ModalProps {
-  modal: boolean;
-  setModal: Dispatch<SetStateAction<boolean>>;
-}
-
-const EditModal: React.FC<ModalProps> = ({ modal, setModal }) => {
+import { useModalContext } from '../../context/ModalContext';
+import { url } from './CalendarComponent';
+import { IEvent } from '../../types/IEvent';
+const EditModal = () => {
+  const {
+    modal,
+    setModal,
+    dateInput,
+    setDateInput,
+    eventTitle,
+    setEventTitle,
+    modalPos,
+    setEventCreated,
+  } = useModalContext();
+  const [color, setColor] = useState('#56a8bd');
+  function createEvent() {
+    fetch(`${url}/events`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        title: eventTitle,
+        timestamp: Number(moment(dateInput).format('X')),
+        color: color,
+      }),
+    }).then((res) => res.json());
+  }
   return (
-    <ModalWrapper
-      id="modalWrapper"
-      //@ts-ignore
-
-      onClick={(e) => (e.target.id === 'modalWrapper' ? setModal(false) : null)}
-    >
-      <ModalWindow>
-        <input type="date" />
-        <div className="modalBtns">
-          <button onClick={() => setModal(false)}>Cancel</button>
-          <button onClick={() => setModal(false)}>Create Event</button>
-        </div>
-      </ModalWindow>
-    </ModalWrapper>
+    <ModalWindow id="modal" $position={modalPos}>
+      <input
+        id="modal"
+        type="date"
+        value={dateInput}
+        onChange={(e) => setDateInput(e.target.value)}
+      />
+      <input
+        id="modal"
+        type="text"
+        placeholder="name your event"
+        value={eventTitle}
+        onChange={(e) => setEventTitle(e.target.value)}
+      />
+      <input
+        className="colorInput"
+        id="modal"
+        type="color"
+        value={color}
+        onChange={(e) => setColor(e.target.value)}
+      />
+      <div className="modalBtns">
+        <button onClick={() => setModal(false)}>Cancel</button>
+        <button
+          onClick={() => {
+            createEvent();
+            setModal(false);
+            setEventTitle('');
+            setEventCreated((prev) => prev + 1);
+          }}
+        >
+          Create Event
+        </button>
+      </div>
+    </ModalWindow>
   );
 };
 
-const ModalWrapper = styled.div`
-  position: relative;
-  position: fixed;
-  height: 100vh;
-  width: 100%;
-  background-color: #000000ac;
-  z-index: 99;
-`;
-const ModalWindow = styled.div`
+const ModalWindow = styled.div<{ $position: { x: number; y: number } }>`
   z-index: 100;
   position: absolute;
   display: flex;
   flex-direction: column;
   width: 300px;
-  min-height: 140px;
+  min-height: 190px;
   background-color: #494949;
   border-radius: 7px;
-  top: calc(50% - 70px);
+  top: ${(props) =>
+    props.$position.y > 790 ? props.$position.y - 140 : props.$position.y}px;
   color: white;
   font-size: 54px;
-  left: calc(50% - 150px);
+  left: ${(props) =>
+    window.innerWidth - props.$position.x < 300
+      ? props.$position.x - 300
+      : props.$position.x}px;
   .modalBtns {
     display: flex;
     justify-content: space-around;
@@ -62,9 +101,13 @@ const ModalWindow = styled.div`
       background-color: #606060;
     }
   }
+  .colorInput {
+    height: 53px;
+    width: 50px;
+  }
   input {
     cursor: pointer;
-    margin: 10px;
+    margin: 3px 10px;
     padding: 7px;
     background-color: transparent;
     border: none;
