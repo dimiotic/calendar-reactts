@@ -5,7 +5,7 @@ import React, {
   useContext,
   useState,
 } from 'react';
-
+import { IEvent } from '../types/IEvent';
 interface IModal {
   modal: boolean;
   setModal: Dispatch<SetStateAction<boolean>>;
@@ -13,9 +13,10 @@ interface IModal {
   setEventCreated: Dispatch<SetStateAction<number>>;
   dateInput: string;
   setDateInput: Dispatch<SetStateAction<string>>;
-  eventTitle: string;
-  setEventTitle: Dispatch<SetStateAction<string>>;
-
+  modalType: string;
+  setEvent: any;
+  setModalType: Dispatch<SetStateAction<string>>;
+  event: IEvent | null;
   modalPos: {
     x: number;
     y: number;
@@ -30,9 +31,10 @@ const ModalContext = createContext<IModal>({
   setEventCreated: () => {},
   dateInput: '',
   setDateInput: () => {},
-  eventTitle: '',
-  setEventTitle: () => {},
-
+  modalType: '',
+  setModalType: () => {},
+  event: null,
+  setEvent: () => {},
   modalPos: {
     x: 0,
     y: 0,
@@ -47,9 +49,11 @@ export const useModalContext = () => {
 export const ModalProvider = ({ children }: any) => {
   const [modal, setModal] = useState(false);
   const [dateInput, setDateInput] = useState('');
-  const [eventTitle, setEventTitle] = useState('');
   const [eventCreated, setEventCreated] = useState(0);
   const [modalPos, setModalPos] = useState({ x: 0, y: 0 });
+  const [modalType, setModalType] = useState('');
+
+  const [event, setEvent] = useState(null);
   return (
     <ModalContext.Provider
       value={{
@@ -57,12 +61,14 @@ export const ModalProvider = ({ children }: any) => {
         setModal,
         dateInput,
         setDateInput,
-        eventTitle,
-        setEventTitle,
         modalPos,
         setModalPos,
         eventCreated,
         setEventCreated,
+        modalType,
+        setModalType,
+        event,
+        setEvent,
       }}
     >
       {children}

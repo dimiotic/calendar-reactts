@@ -14,15 +14,24 @@ interface DateObj {
 const DateItem: FC<DateObj> = ({ date, thisMonth, events }) => {
   const scrollableWrapper = useRef(null);
   useScrollbar(scrollableWrapper);
-  const { modal, setModal, setDateInput, setModalPos } = useModalContext();
-
+  const { modal, setModal, setDateInput, setModalPos, setModalType, setEvent } =
+    useModalContext();
+  const openModal = (
+    e: React.MouseEvent,
+    modalType: 'edit' | 'create',
+    event: IEvent = { id: 0, title: '', timestamp: 0 }
+  ) => {
+    setModalPos({ x: e.clientX, y: e.clientY });
+    setModalType(modalType);
+    setEvent(event);
+    setDateInput(date.format('Y MM DD').split(' ').join('-'));
+    setModal(false);
+    setModal(true);
+  };
   return (
     <Wrapper
       onAuxClick={(e) => {
-        setModalPos({ x: e.clientX, y: e.clientY });
-        setDateInput(date.format('Y MM DD').split(' ').join('-'));
-        setModal(false);
-        setModal(true);
+        openModal(e, 'create');
       }}
       $isThisMonth={date.format('MMM') === thisMonth.substring(0, 3)}
       $isToday={moment().format('D M y') === date.format('D M y')}
@@ -47,7 +56,13 @@ const DateItem: FC<DateObj> = ({ date, thisMonth, events }) => {
                 event.timestamp <= Number(date.clone().endOf('day').format('X'))
             )
             .map((event) => (
-              <EventButton $color={event.color} key={event.id}>
+              <EventButton
+                onDoubleClick={(e) => {
+                  openModal(e, 'edit', event);
+                }}
+                $color={event.color}
+                key={event.id}
+              >
                 {event.title.length > 24
                   ? event.title.substring(0, 24) + '...'
                   : event.title}

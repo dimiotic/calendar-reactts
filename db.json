@@ -6,11 +6,6 @@
       "timestamp": 1693744502
     },
     {
-      "id": 2,
-      "title": "Test Math",
-      "timestamp": 1693899302
-    },
-    {
       "id": 3,
       "title": "date",
       "timestamp": 1693391702
@@ -22,11 +17,6 @@
       "color": "#785589"
     },
     {
-      "id": 5,
-      "title": "shopping",
-      "timestamp": 1695292502
-    },
-    {
       "id": 6,
       "title": "День народження Марійка",
       "timestamp": 1702208102
@@ -34,32 +24,14 @@
     {
       "id": 7,
       "title": "Test Deutch",
-      "timestamp": 1693899302
+      "timestamp": 1694642400,
+      "color": "#56a8bd"
     },
     {
-      "id": 8,
-      "title": "new app",
-      "timestamp": 1695292502
-    },
-    {
-      "id": 9,
-      "title": "app design",
-      "timestamp": 1695295502
-    },
-    {
-      "id": 10,
-      "title": "app product",
-      "timestamp": 1695292502
-    },
-    {
-      "id": 11,
-      "title": "app debug and some more shit? ypu know broooo",
-      "timestamp": 1695292502
-    },
-    {
-      "title": "Ремотн туалету",
+      "title": "Ремонт туалету",
       "timestamp": 1694210400,
-      "id": 12
+      "id": 12,
+      "color": "#bd56a2"
     },
     {
       "title": "Поїздка за подарком",
@@ -87,6 +59,42 @@
       "timestamp": 1696888800,
       "color": "#94b90e",
       "id": 17
+    },
+    {
+      "title": "Дістатись додому",
+      "timestamp": 1693951200,
+      "color": "#22e01f",
+      "id": 18
+    },
+    {
+      "title": "disko",
+      "timestamp": 1695247200,
+      "color": "#9956bd",
+      "id": 19
+    },
+    {
+      "title": "Test Deutch",
+      "timestamp": 1693864800,
+      "color": "#bd5688",
+      "id": 20
+    },
+    {
+      "title": "TIME TO PARTY",
+      "timestamp": 1694037600,
+      "color": "#ccc500",
+      "id": 21
+    },
+    {
+      "title": "Make some sport",
+      "timestamp": 1694556000,
+      "color": "#74fbce",
+      "id": 22
+    },
+    {
+      "title": "Na",
+      "timestamp": 1693951200,
+      "color": "#bd569d",
+      "id": 23
     }
   ]
 }

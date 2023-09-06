@@ -10,25 +10,32 @@ const EditModal = () => {
     setModal,
     dateInput,
     setDateInput,
-    eventTitle,
-    setEventTitle,
+    event,
     modalPos,
+    setEvent,
     setEventCreated,
+    modalType,
   } = useModalContext();
-  const [color, setColor] = useState('#56a8bd');
-  function createEvent() {
-    fetch(`${url}/events`, {
-      method: 'POST',
+  const [color, setColor] = useState(event?.color ? event.color : '#56a8bd');
+  function createEvent(toRemove: Boolean = false) {
+    console.log(toRemove);
+    fetch(`${url}/events${modalType === 'edit' ? `/${event?.id}` : ''}`, {
+      method: toRemove ? 'DELETE' : modalType === 'edit' ? 'PATCH' : 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        title: eventTitle,
+        title: event?.title,
         timestamp: Number(moment(dateInput).format('X')),
         color: color,
       }),
     }).then((res) => res.json());
   }
+  const handleChange = () => {
+    setModal(false);
+    setEvent({ ...event, title: '' });
+    setEventCreated((prev) => prev + 1);
+  };
   return (
     <ModalWindow id="modal" $position={modalPos}>
       <input
@@ -41,8 +48,8 @@ const EditModal = () => {
         id="modal"
         type="text"
         placeholder="name your event"
-        value={eventTitle}
-        onChange={(e) => setEventTitle(e.target.value)}
+        value={event?.title}
+        onChange={(e) => setEvent({ ...event, title: e.target.value })}
       />
       <input
         className="colorInput"
@@ -53,15 +60,23 @@ const EditModal = () => {
       />
       <div className="modalBtns">
         <button onClick={() => setModal(false)}>Cancel</button>
+        {modalType === 'edit' && (
+          <button
+            onClick={() => {
+              createEvent(true);
+              handleChange();
+            }}
+          >
+            Remove event
+          </button>
+        )}
         <button
           onClick={() => {
             createEvent();
-            setModal(false);
-            setEventTitle('');
-            setEventCreated((prev) => prev + 1);
+            handleChange();
           }}
         >
-          Create Event
+          {modalType === 'edit' ? 'Edit event' : 'Create Event'}
         </button>
       </div>
     </ModalWindow>
