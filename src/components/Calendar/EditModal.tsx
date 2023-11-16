@@ -1,12 +1,10 @@
-import moment, { Moment } from 'moment';
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import moment from 'moment';
+import { useState } from 'react';
 import { styled } from 'styled-components';
 import { useModalContext } from '../../context/ModalContext';
 import { url } from './CalendarComponent';
-import { IEvent } from '../../types/IEvent';
 const EditModal = () => {
   const {
-    modal,
     setModal,
     dateInput,
     setDateInput,

@@ -43,7 +43,7 @@ const CalendarComponent = () => {
       .then((res) => {
         setEvents(res);
       });
-  }, [today, eventCreated]);
+  }, [today, eventCreated, startDateQuery, endDateQuery]);
   return (
     //@ts-ignore
     <main onClick={(e) => setModal(e.target?.id === 'modal')}>

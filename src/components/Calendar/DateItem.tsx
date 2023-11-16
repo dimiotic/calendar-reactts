@@ -1,9 +1,8 @@
 import moment, { Moment } from 'moment';
-import React, { FC, useRef, useState } from 'react';
+import React, { FC, useRef } from 'react';
 import { styled } from 'styled-components';
 import { IEvent } from '../../types/IEvent';
 import { useScrollbar } from '../../hooks/useScrollbar';
-import EditModal from './EditModal';
 import { useModalContext } from '../../context/ModalContext';
 
 interface DateObj {
@@ -14,7 +13,7 @@ interface DateObj {
 const DateItem: FC<DateObj> = ({ date, thisMonth, events }) => {
   const scrollableWrapper = useRef(null);
   useScrollbar(scrollableWrapper);
-  const { modal, setModal, setDateInput, setModalPos, setModalType, setEvent } =
+  const { setModal, setDateInput, setModalPos, setModalType, setEvent } =
     useModalContext();
   const openModal = (
     e: React.MouseEvent,
